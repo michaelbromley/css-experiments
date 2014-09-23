@@ -1,0 +1,38 @@
+html {
+    height: 100%;
+}
+body {
+    font-family: "Helvetic Neue", Helvetica, Arial, sans-serif;
+    color: white;
+}
+h1 {
+    font-size: 24px;
+}
+
+a:link, a:visited {
+    color: #fffec1;
+    text-decoration: none;
+}
+a:hover {
+    color: #fff900;
+}
+
+.info {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 1s;
+}
+
+.info.hidden {
+    opacity: 0;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+}
