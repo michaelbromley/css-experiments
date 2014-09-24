@@ -23,11 +23,12 @@ a:hover {
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
     opacity: 1;
-    transition: opacity 1s;
+    transition: opacity 1s, visibility 0s 1s;
 }
 
 .info.hidden {
     opacity: 0;
+    visibility: hidden;
 }
 
 .close {

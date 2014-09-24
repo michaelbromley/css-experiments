@@ -63,18 +63,10 @@ body {
     overflow: hidden;
 }
 
-.hover-container {
-    position: relative;
-    animation: hover 3s linear infinite alternate;
-    transform-style: preserve-3d;
-    perspective: 1500px;
-}
-
 .container {
     position: absolute;
     left: 100px;
     top: 100px;
-    perspective: 1500px;
     transform: rotateX(90deg);
     transform-style: preserve-3d;
     overflow: visible;
@@ -85,14 +77,18 @@ body {
     transform 1s linear;
 }
 
+.hover-container {
+    position: relative;
+    animation: hover 3s linear infinite alternate;
+    transform-style: preserve-3d;
+}
+
 .wing {
     position: absolute;
-
     transform-style: preserve-3d;
     animation: flap 0.3s linear infinite alternate;
     width: 100px;
     height: 100px;
-    /*background-color: rgba(252, 227, 100, 0.69);*/
     background: radial-gradient(ellipse at center, rgba(252,227,100,0.9) 65%,rgba(255,0,0,0.9) 100%);
     border-bottom: 3px solid red;
 }

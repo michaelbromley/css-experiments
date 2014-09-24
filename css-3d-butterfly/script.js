@@ -1,17 +1,21 @@
 var timer;
+var butterflyWingspan = 100;
+var rotationDamping = 10;
+var container = document.querySelector('.container');
+container.style.top = '100px';
+container.style.left = '100px';
 document.addEventListener('click', moveTo);
 
 function moveTo(e) {
-    var container = document.querySelector('.container');
     var currentX = parseInt(container.style.left, 10);
     var currentY = parseInt(container.style.top, 10);
-    var newX = e.clientX - 60;
-    var newY = e.clientY - 10;
+    var newX = e.clientX - butterflyWingspan;
+    var newY = e.clientY;
     var deltaX = newX - currentX;
     var deltaY = newY - currentY;
 
-    var rotateZ = -Math.min(deltaX / 10, 180);
-    var rotateX = 90 - Math.min(deltaY / 10, 90);
+    var rotateZ = -Math.min(Math.max(deltaX / rotationDamping, -90), 90);
+    var rotateX = 90 - Math.min(Math.max(deltaY / rotationDamping, -90), 90);
     var translateZ = newY - 500;
 
     container.style.left = newX + 'px';
