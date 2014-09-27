@@ -4,6 +4,8 @@ html, body {
   box-sizing: border-box;
 }
 
+@scale: 2vw;
+
 .scene {
   position: absolute;
   top: 0;
@@ -30,7 +32,7 @@ html, body {
  */
 @track-color: green;
 @track-line-width: 4px;
-@track-tile-width: 600px;
+@track-tile-width: 30 * @scale;
 @track-tile-height: 600px;
 .track {
   opacity: 0;
@@ -83,10 +85,10 @@ html, body {
 
 .generate-track-ids(@n, @i: 1) when (@i =< @n) {
   .track.top:nth-child(@{i})  {
-    animation: track-animation-top 3s linear (@i - 1) * unit(@track-tile-height, s)/1000 infinite normal;
+    animation: track-animation-top 3s linear (@i - 1) * 0.6s infinite normal;
   }
   .track.bottom:nth-child(@{i})  {
-    animation: track-animation-bottom 3s linear (@i - 1) * unit(@track-tile-height, s)/1000 infinite normal;
+    animation: track-animation-bottom 3s linear (@i - 1) * 0.6s infinite normal;
   }
   .generate-track-ids(@n, (@i + 1));
 }
@@ -96,19 +98,20 @@ html, body {
  * The ship
  */
 @ship-color: blue;
+@ship-border-width: @scale * 0.15;
 
 .ship-container {
-  width: 500px;
-  height: 500px;
-  margin: -250px -250px;
+  width: 100%;
+  height: 100%;
+  margin: -50% -50%;
   //transition: transform 1s;
 }
 .ship {
-  border: 2px solid @ship-color;
+  border: @ship-border-width solid @ship-color;
 }
 
-@hull-width: 50px;
-@hull-height: 200px;
+@hull-width: 2.5 * @scale;
+@hull-height: 10 * @scale;
 @ship-wedge-angle: 5deg;
 .hull {
   width: @hull-width;
@@ -133,7 +136,7 @@ html, body {
   }
 }
 .booster {
-  @booster-diameter: 27px;
+  @booster-diameter: @hull-width * 0.6;
   @margin-top: ((@hull-height * cos(@ship-wedge-angle))/2) - @booster-diameter/2;
   width: @booster-diameter;
   height: @booster-diameter;
@@ -144,33 +147,35 @@ html, body {
     content: '';
     position: absolute;
     display: inline-block;
-    width: @booster-diameter - 6px;
-    height: @booster-diameter - 6px;
-    margin: 1px;
+    width: @booster-diameter * 0.9;
+    height: @booster-diameter * 0.9;
+    margin: (@booster-diameter * 0.05)-@ship-border-width;
     border-radius: 50% 50%;
-    border: 2px solid @ship-color;
-    transform: translateZ(-5 px);
+    border: @ship-border-width solid @ship-color;
+    transform: translateZ(@scale*0.4);
   }
   &:after {
     content: '';
     position: absolute;
     display: inline-block;
-    width: @booster-diameter + 2px;
-    height: @booster-diameter + 2px;
-    margin: -3px;
+    width: @booster-diameter * 1.1;
+    height: @booster-diameter * 1.1;
+    margin: -(@booster-diameter * 0.05)-@ship-border-width;
     border-radius: 50% 50%;
-    border: 2px solid @ship-color;
-    transform: translateZ(2px);
+    border: @ship-border-width solid @ship-color;
+    transform: translateZ(-@scale*0.4);
   }
 }
 
-@wing-width: 400px;
-@wing-height: 100px;
+@wing-width: 20 * @scale;
+@wing-height: 5 * @scale;
 .wing {
   width: @wing-width;
   height: @wing-height;
   margin: 0 -@wing-width/2;
   border-radius: 50% 50% 0 0;
+  border-width: @ship-border-width*2;
+  border-bottom-width: @ship-border-width;
 
   &.top {
     transform-origin: top center;
@@ -183,6 +188,7 @@ html, body {
   &.back {
     @wing-back-height: @wing-height * sin(@ship-wedge-angle*2);
     @margin-top: (@wing-height * cos(@ship-wedge-angle)) - @wing-back-height/3;
+    border-width: @ship-border-width;
     margin: @margin-top -@wing-width/2;
     height: @wing-back-height;
     transform-origin: center center;
@@ -191,8 +197,8 @@ html, body {
   }
 }
 .gun {
-  width: 3px;
-  height: 80px;
+  width: 0.1 * @scale;
+  height: 2 * @scale;
   &.right {
     margin: -@wing-height/5 @wing-width/4;
   }
