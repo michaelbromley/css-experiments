@@ -118,17 +118,15 @@ body {
  * The ship
  */
 .ship-container {
-  width: 100%;
-  height: 100%;
-  margin: -50% -50%;
+  transition: transform 0s;
 }
 .ship {
-  border: 0.3vw solid #0000ff;
+  border: 0.15vw solid #0000ff;
 }
 .hull {
-  width: 5vw;
-  height: 20vw;
-  margin: -10vw -2.5vw;
+  width: 2.5vw;
+  height: 10vw;
+  margin: -5vw -1.25vw;
 }
 .hull.top {
   transform-origin: top center;
@@ -139,15 +137,15 @@ body {
   transform: rotateX(-5deg);
 }
 .hull.back {
-  margin: 8.2254652vw -2.5vw;
-  height: 3.47296355vw;
+  margin: 4.1127326vw -1.25vw;
+  height: 1.73648178vw;
   transform-origin: center center;
   transform: rotateX(90deg);
 }
 .booster {
-  width: 3vw;
-  height: 3vw;
-  margin: 8.46194698vw -1.5vw;
+  width: 1.5vw;
+  height: 1.5vw;
+  margin: 4.23097349vw -0.75vw;
   border-radius: 50% 50%;
   transform: rotateX(90deg);
 }
@@ -155,31 +153,31 @@ body {
   content: '';
   position: absolute;
   display: inline-block;
-  width: 2.7vw;
-  height: 2.7vw;
-  margin: -0.15vw;
+  width: 1.35vw;
+  height: 1.35vw;
+  margin: -0.075vw;
   border-radius: 50% 50%;
-  border: 0.3vw solid #0000ff;
-  transform: translateZ(0.8vw);
+  border: 0.15vw solid #0000ff;
+  transform: translateZ(0.4vw);
 }
 .booster:after {
   content: '';
   position: absolute;
   display: inline-block;
-  width: 3.3vw;
-  height: 3.3vw;
-  margin: -0.45vw;
+  width: 1.65vw;
+  height: 1.65vw;
+  margin: -0.225vw;
   border-radius: 50% 50%;
-  border: 0.3vw solid #0000ff;
-  transform: translateZ(-0.8vw);
+  border: 0.15vw solid #0000ff;
+  transform: translateZ(-0.4vw);
 }
 .wing {
-  width: 40vw;
-  height: 10vw;
-  margin: 0 -20vw;
+  width: 20vw;
+  height: 5vw;
+  margin: 0 -10vw;
   border-radius: 50% 50% 0 0;
-  border-width: 0.6vw;
-  border-bottom-width: 0.3vw;
+  border-width: 0.3vw;
+  border-bottom-width: 0.15vw;
 }
 .wing.top {
   transform-origin: top center;
@@ -190,20 +188,20 @@ body {
   transform: rotateX(-5deg);
 }
 .wing.back {
-  border-width: 0.3vw;
-  margin: 9.38311972vw -20vw;
-  height: 1.73648178vw;
+  border-width: 0.15vw;
+  margin: 4.69155986vw -10vw;
+  height: 0.86824089vw;
   transform-origin: center center;
   transform: rotateX(90deg);
   border-radius: 0;
 }
 .gun {
-  width: 0.2vw;
-  height: 4vw;
+  width: 0.1vw;
+  height: 2vw;
 }
 .gun.right {
-  margin: -2vw 10vw;
+  margin: -1vw 5vw;
 }
 .gun.left {
-  margin: -2vw -10vw;
+  margin: -1vw -5vw;
 }

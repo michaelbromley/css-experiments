@@ -4,7 +4,7 @@ html, body {
   box-sizing: border-box;
 }
 
-@scale: 2vw;
+@scale: 1vw;
 
 .scene {
   position: absolute;
@@ -32,7 +32,7 @@ html, body {
  */
 @track-color: green;
 @track-line-width: 4px;
-@track-tile-width: 30 * @scale;
+@track-tile-width: 60 * @scale;
 @track-tile-height: 600px;
 .track {
   opacity: 0;
@@ -101,10 +101,7 @@ html, body {
 @ship-border-width: @scale * 0.15;
 
 .ship-container {
-  width: 100%;
-  height: 100%;
-  margin: -50% -50%;
-  //transition: transform 1s;
+  transition: transform 0s;
 }
 .ship {
   border: @ship-border-width solid @ship-color;
