@@ -1,9 +1,20 @@
+function Perspective(containerElement) {
+    var el = containerElement;
+
+    this.update = function(ship) {
+        var x = ship.x * -0.3;
+        var y = ship.y * -0.3;
+        el.style.transform = "translateX(" + x + 'px) translateY(' + y + 'px)';
+    }
+}
+
 
 var ship = new Ship(
     document.querySelector('.ship-container'),
     document.documentElement.clientWidth,
     document.documentElement.clientHeight);
 
+var perspective = new Perspective(document.querySelector('.midground'));
 
 /**
  * Globals
@@ -30,7 +41,7 @@ var keysDown = [];
     }
 
     ship.updatePosition();
-
+    perspective.update(ship);
 
     setTimeout(tick, 30);
 })();
