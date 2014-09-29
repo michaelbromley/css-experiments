@@ -3,6 +3,8 @@
  * The ship
  */
 @ship-color: blue;
+@ship-box-shadow: inset 0 0 10px @ship-color, 0px 0px 10px 0px @ship-color;
+@ship-fill-color: rgba(0,0,0,0.5);
 @ship-border-width: @scale * 0.15;
 
 .ship-container {
@@ -10,6 +12,7 @@
 }
 .ship {
   border: @ship-border-width solid @ship-color;
+  box-shadow: @ship-box-shadow;
 }
 
 @hull-width: 2.5 * @scale;
@@ -19,6 +22,7 @@
   width: @hull-width;
   height: @hull-height;
   margin: -@hull-height/2 -@hull-width/2;
+  background-color: @ship-fill-color;
 
   &.top {
     transform-origin: top center;
@@ -37,6 +41,30 @@
     transform: rotateX(90deg);
   }
 }
+
+
+/*
+// does not work for some reason
+.generate-booster-animation(@name, @color) {
+  .keyframe(@n, @i: 0) when (@i =< @n) {
+    @percentage: percentage(@i/10);
+    @{percentage} {
+      @random: `Math.random()`;
+      @fade: percentage(@random);
+      background-color: fade(@color, @fade);
+      width: @fade;
+    }
+    .keyframe(@n, (@i + 1));
+  }
+
+  @keyframes @name {
+    .keyframe(10);
+  }
+}
+.generate-booster-animation(booster-amination-1, white);
+.generate-booster-animation(booster-amination-2, red);
+.generate-booster-animation(booster-amination-3, orange);*/
+
 .booster {
   @booster-diameter: @hull-width * 0.6;
   @margin-top: ((@hull-height * cos(@ship-wedge-angle))/2) - @booster-diameter/2;
@@ -45,6 +73,7 @@
   margin: @margin-top -@booster-diameter/2;
   border-radius: 50% 50%;
   transform: rotateX(90deg);
+  animation: booster-animation-1 10s infinite;
   &:before {
     content: '';
     position: absolute;
@@ -53,7 +82,6 @@
     height: @booster-diameter * 0.9;
     margin: (@booster-diameter * 0.05)-@ship-border-width;
     border-radius: 50% 50%;
-    border: @ship-border-width solid @ship-color;
     transform: translateZ(@scale*0.4);
   }
   &:after {
@@ -64,7 +92,7 @@
     height: @booster-diameter * 1.1;
     margin: -(@booster-diameter * 0.05)-@ship-border-width;
     border-radius: 50% 50%;
-    border: @ship-border-width solid @ship-color;
+    border: @ship-border-width solid lighten(@ship-color, 30%);
     transform: translateZ(-@scale*0.4);
   }
 }
@@ -78,6 +106,7 @@
   border-radius: 50% 50% 0 0;
   border-width: @ship-border-width*2;
   border-bottom-width: @ship-border-width;
+  background-color: @ship-fill-color;
 
   &.top {
     transform-origin: top center;

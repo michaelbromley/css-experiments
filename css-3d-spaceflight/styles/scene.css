@@ -22,6 +22,67 @@ body {
   left: 50%;
   transform-style: preserve-3d;
 }
+@keyframes stars-animation-1 {
+  0% {
+    transform: rotateZ(90deg) translateZ(-300px);
+  }
+  100% {
+    transform: rotateZ(90deg) translateZ(200px);
+  }
+}
+@keyframes stars-animation-2 {
+  0% {
+    transform: rotateZ(180deg) translateZ(0px);
+  }
+  100% {
+    transform: rotateZ(180deg) translateZ(800px);
+  }
+}
+.stars {
+  position: inherit;
+  z-index: -1;
+  width: 1px;
+  height: 1px;
+  box-shadow: 3vw 1vh #ffdad0, 6vw 49vh #ffd6e7, 15vw -33vh #ffffff, 17vw -5vh #ffffff, 20vw 10vh #ffffff, 22vw 15vh #bbc3ff, 26vw 23vh #ffffff, 27vw -26vh #ffffff, 33vw 17vh #f1ffad, 38vw -2vh #ffd2a3, 41vw -9vh #ffffff, -2vw 2vh #ffffff, -24vw 45vh #dbffeb, -6vw 20vh #ffffff, -11vw 34vh #fff6c8, -18vw -40vh #ffffff, -33vw -23vh #b9cbff, -4vw 20vh #ffffff, -1vw 30vh #b0ffff;
+}
+.stars:before {
+  position: absolute;
+  content: '';
+  width: 2px;
+  height: 2px;
+  animation: stars-animation-1 90s linear infinite alternate;
+  box-shadow: 3vw 1vh #ffdad0, 6vw 49vh #ffd6e7, 15vw -33vh #ffffff, 17vw -5vh #ffffff, 20vw 10vh #ffffff, 22vw 15vh #bbc3ff, 26vw 23vh #ffffff, 27vw -26vh #ffffff, 33vw 17vh #f1ffad, 38vw -2vh #ffd2a3, 41vw -9vh #ffffff, -2vw 2vh #ffffff, -24vw 45vh #dbffeb, -6vw 20vh #ffffff, -11vw 34vh #fff6c8, -18vw -40vh #ffffff, -33vw -23vh #b9cbff, -4vw 20vh #ffffff, -1vw 30vh #b0ffff;
+  transform: rotateZ(90deg);
+}
+.stars:after {
+  position: absolute;
+  content: '';
+  width: 1px;
+  height: 1px;
+  animation: stars-animation-2 90s linear infinite alternate;
+  box-shadow: 3vw 1vh #ffdad0, 6vw 49vh #ffd6e7, 15vw -33vh #ffffff, 17vw -5vh #ffffff, 20vw 10vh #ffffff, 22vw 15vh #bbc3ff, 26vw 23vh #ffffff, 27vw -26vh #ffffff, 33vw 17vh #f1ffad, 38vw -2vh #ffd2a3, 41vw -9vh #ffffff, -2vw 2vh #ffffff, -24vw 45vh #dbffeb, -6vw 20vh #ffffff, -11vw 34vh #fff6c8, -18vw -40vh #ffffff, -33vw -23vh #b9cbff, -4vw 20vh #ffffff, -1vw 30vh #b0ffff;
+  transform: rotateZ(180deg);
+}
+@keyframes planet-animation {
+  0% {
+    transform: translateZ(0px);
+  }
+  100% {
+    transform: translateZ(300px);
+  }
+}
+.planet {
+  position: absolute;
+  z-index: 1;
+  top: -25vw;
+  left: -75vw;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50%;
+  background-color: #111;
+  animation: planet-animation 90s linear infinite alternate;
+  box-shadow: inset 0 0 50px #ffffff, inset 20px 0 80px #ff00ff, inset -20px 0 80px #00ffff, inset 20px 0 300px #ff00ff, inset -20px 0 300px #00ffff, 0 0 50px #ffffff, -10px 0 80px #ff00ff, 10px 0 80px #00ffff;
+}
 /**
  * The ship
  */
@@ -30,11 +91,13 @@ body {
 }
 .ship {
   border: 0.15vw solid #0000ff;
+  box-shadow: inset 0 0 10px #0000ff, 0px 0px 10px 0px #0000ff;
 }
 .hull {
   width: 2.5vw;
   height: 10vw;
   margin: -5vw -1.25vw;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .hull.top {
   transform-origin: top center;
@@ -50,12 +113,34 @@ body {
   transform-origin: center center;
   transform: rotateX(90deg);
 }
+/*
+// does not work for some reason
+.generate-booster-animation(@name, @color) {
+  .keyframe(@n, @i: 0) when (@i =< @n) {
+    @percentage: percentage(@i/10);
+    @{percentage} {
+      @random: `Math.random()`;
+      @fade: percentage(@random);
+      background-color: fade(@color, @fade);
+      width: @fade;
+    }
+    .keyframe(@n, (@i + 1));
+  }
+
+  @keyframes @name {
+    .keyframe(10);
+  }
+}
+.generate-booster-animation(booster-amination-1, white);
+.generate-booster-animation(booster-amination-2, red);
+.generate-booster-animation(booster-amination-3, orange);*/
 .booster {
   width: 1.5vw;
   height: 1.5vw;
   margin: 4.23097349vw -0.75vw;
   border-radius: 50% 50%;
   transform: rotateX(90deg);
+  animation: booster-animation-1 10s infinite;
 }
 .booster:before {
   content: '';
@@ -65,7 +150,6 @@ body {
   height: 1.35vw;
   margin: -0.075vw;
   border-radius: 50% 50%;
-  border: 0.15vw solid #0000ff;
   transform: translateZ(0.4vw);
 }
 .booster:after {
@@ -76,7 +160,7 @@ body {
   height: 1.65vw;
   margin: -0.225vw;
   border-radius: 50% 50%;
-  border: 0.15vw solid #0000ff;
+  border: 0.15vw solid #9999ff;
   transform: translateZ(-0.4vw);
 }
 .wing {
@@ -86,6 +170,7 @@ body {
   border-radius: 50% 50% 0 0;
   border-width: 0.3vw;
   border-bottom-width: 0.15vw;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .wing.top {
   transform-origin: top center;
@@ -121,17 +206,19 @@ body {
   width: 60vw;
   height: 600px;
   margin: -300px -30vw;
-  border: 4px solid #008000;
-  border-left-width: 1.33333333px;
-  border-right-width: 1.33333333px;
+  border: 8px solid #008000;
+  box-shadow: inset 0 0 30px #008000, 0px 0px 30px 0px #008000;
+  border-left-width: 2.66666667px;
+  border-right-width: 2.66666667px;
 }
 .track:before {
   content: '';
   position: absolute;
   width: 20vw;
   height: 600px;
-  border-left: 1.33333333px solid #008000;
-  border-right: 1.33333333px solid #008000;
+  border-left: 2.66666667px solid #008000;
+  border-right: 2.66666667px solid #008000;
+  box-shadow: inset 0 0 30px #008000, 0px 0px 30px 0px #008000;
   left: 20vw;
 }
 .track:after {
@@ -139,9 +226,10 @@ body {
   position: absolute;
   width: 60vw;
   height: 200px;
-  border-top: 4px solid #008000;
-  border-bottom: 4px solid #008000;
-  top: 20vw;
+  border-top: 8px solid #008000;
+  border-bottom: 8px solid #008000;
+  box-shadow: inset 0 0 30px #008000, 0px 0px 30px 0px #008000;
+  top: 200px;
 }
 @keyframes track-animation-top {
   0% {

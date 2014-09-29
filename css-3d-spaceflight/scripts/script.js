@@ -1,10 +1,12 @@
-function Perspective(containerElement) {
-    var el = containerElement;
+function Perspective(backgroundContainer, midgroundContainer) {
+    var background = backgroundContainer;
+    var midground = midgroundContainer;
 
     this.update = function(ship) {
         var x = ship.x * -0.3;
         var y = ship.y * -0.3;
-        el.style.transform = "translateX(" + x + 'px) translateY(' + y + 'px)';
+        midground.style.transform = "translateX(" + x + 'px) translateY(' + y + 'px)';
+        //background.style.transform = "translateX(" + x * 0.3 + 'px) translateY(' + y * 0.3 + 'px)';
     }
 }
 
@@ -14,7 +16,9 @@ var ship = new Ship(
     document.documentElement.clientWidth,
     document.documentElement.clientHeight);
 
-var perspective = new Perspective(document.querySelector('.midground'));
+var perspective = new Perspective(
+    document.querySelector('.background'),
+    document.querySelector('.midground'));
 
 /**
  * Globals
