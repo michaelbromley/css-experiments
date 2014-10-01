@@ -21,7 +21,7 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
     self.y = 100;
     self.z = 0;
 
-    // linear acceleration
+    // linear acceleration TODO: rename to velocity
     self.ax = 0;
     self.ay = 0;
 

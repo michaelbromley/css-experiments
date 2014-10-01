@@ -7,6 +7,11 @@
 @track-box-shadow: inset 0 0 30px @track-color, 0px 0px 30px 0px @track-color;
 @track-tile-width: 60 * @scale;
 @track-tile-height: 600px;
+.track-container {
+  position: inherit;
+  z-index: 10;
+  transform-style: preserve-3d;
+}
 .track {
   opacity: 0;
   width: @track-tile-width;
