@@ -61,8 +61,8 @@
     }
   }
 }
-.generate-track-animation-definition(track-animation-top, -100px);
-.generate-track-animation-definition(track-animation-bottom, 100px);
+.generate-track-animation-definition(track-animation-top, -@scale * 15);
+.generate-track-animation-definition(track-animation-bottom, @scale * 15);
 
 .generate-track-ids(@n, @i: 1) when (@i =< @n) {
   .track.top:nth-child(@{i})  {

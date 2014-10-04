@@ -1,11 +1,13 @@
 
 function Shot(el, x, y) {
     var self = this;
+    var range = 15000; // how far into the distance before it disappears
     self.el = el;
     self.x = x;
     self.y = y;
     self.z = 0;
-    self.vz = -1;
+    self.vz = -200;
+    self.hit = false; // has the shot collided with an alien?
 
     /**
      * The x and y is the position of the ship, which affects how the shots will be offset
@@ -14,14 +16,16 @@ function Shot(el, x, y) {
      * @returns {boolean}
      */
     self.updatePosition = function(x, y) {
+        var offsetX = self.x - x;
+        var offsetY = self.y - y;
+        var opacity = (range + self.z) / range;
         self.z += self.vz;
-        var offsetX = (self.x - x) * 3.3;
-        var offsetY = (self.y - y) * 3.3;
         self.el.style.transform =
             'translateY(' + (self.y + offsetY) + 'px) ' +
             'translateX(' + (self.x + offsetX) + 'px) ' +
             'translateZ(' + self.z + 'px) ';
-        return self.z < -15000;
+        self.el.style.opacity = opacity;
+        return self.z < -range || self.hit;
     };
 }
 
@@ -54,6 +58,9 @@ var shotFactory = (function() {
                 shots.splice(shotsToRemove[i], 1);
                 document.querySelector('.scene').removeChild(el);
             }
+        },
+        shots: function() {
+            return shots;
         }
     };
 })();

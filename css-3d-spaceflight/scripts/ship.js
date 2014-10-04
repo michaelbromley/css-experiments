@@ -21,64 +21,64 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
     self.y = 100;
     self.z = 0;
 
-    // linear acceleration TODO: rename to velocity
-    self.ax = 0;
-    self.ay = 0;
+    // linear velocity
+    self.vx = 0;
+    self.vy = 0;
 
     // rotational position
-    self.rX = 90;
-    self.rY = 0;
-    self.rZ = 0;
+    self.rx = 90;
+    self.ry = 0;
+    self.rz = 0;
 
-    // rotational acceleration
-    self.arX = 0;
-    self.arY = 0;
-    self.arZ = 0;
+    // rotational velocity
+    self.vrx = 0;
+    self.vry = 0;
+    self.vrz = 0;
 
     self.moveLeft = function () {
-        self.ax += A;
-        self.arY += AA;
-        self.arZ += AA;
+        self.vx += A;
+        self.vry += AA;
+        self.vrz += AA;
     };
 
     self.moveRight = function () {
-        self.ax-= A;
-        self.arY -= AA;
-        self.arZ -= AA;
+        self.vx-= A;
+        self.vry -= AA;
+        self.vrz -= AA;
     };
 
     self.moveUp = function () {
-        self.ay -= A;
-        self.arX -= AA;
+        self.vy -= A;
+        self.vrx -= AA;
     };
 
     self.moveDown = function () {
-        self.ay += A;
-        self.arX += AA;
+        self.vy += A;
+        self.vrx += AA;
     };
 
     self.updatePosition = function() {
         enforceFieldBoundary();
 
-        self.x += self.ax;
-        self.y += self.ay;
-        self.rY += self.arY;
-        self.rZ += self.arZ;
-        self.rX += self.arX;
+        self.x += self.vx;
+        self.y += self.vy;
+        self.ry += self.vry;
+        self.rz += self.vrz;
+        self.rx += self.vrx;
 
-        self.ax = applyDeceleration(self.ax, D);
-        self.ay = applyDeceleration(self.ay, D);
-        self.arX = applyRotationalDeceleration(self.arX, self.rX, 90, AD);
-        self.arY = applyRotationalDeceleration(self.arY, self.rY, 0, AD);
-        self.arZ = applyRotationalDeceleration(self.arZ, self.rZ, 0, AD);
+        self.vx = applyDeceleration(self.vx, D);
+        self.vy = applyDeceleration(self.vy, D);
+        self.vrx = applyRotationalDeceleration(self.vrx, self.rx, 90, AD);
+        self.vry = applyRotationalDeceleration(self.vry, self.ry, 0, AD);
+        self.vrz = applyRotationalDeceleration(self.vrz, self.rz, 0, AD);
 
         self.el.style.transform =
             'translateZ(' + self.z + 'px) ' +
             'translateX(' + self.x + 'px) ' +
             'translateY(' + self.y + 'px) ' +
-            'rotateX(' + self.rX + 'deg) ' +
-            'rotateY(' + self.rY + 'deg) ' +
-            'rotateZ(' + self.rZ + 'deg) ';
+            'rotateX(' + self.rx + 'deg) ' +
+            'rotateY(' + self.ry + 'deg) ' +
+            'rotateZ(' + self.rz + 'deg) ';
     };
 
     function enforceFieldBoundary() {
@@ -86,19 +86,19 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
         var delta;
         if (MAX_X < self.x) {
             delta = self.x - MAX_X;
-            self.ax -= delta * bounceFactor;
+            self.vx -= delta * bounceFactor;
         }
         if (self.x < MIN_X) {
             delta = MIN_X - self.x;
-            self.ax += delta * bounceFactor;
+            self.vx += delta * bounceFactor;
         }
         if (MAX_Y < self.y) {
             delta = self.y - MAX_Y;
-            self.ay -= delta * bounceFactor;
+            self.vy -= delta * bounceFactor;
         }
         if (self.y < MIN_Y) {
             delta = MIN_Y - self.y;
-            self.ay += delta * bounceFactor;
+            self.vy += delta * bounceFactor;
         }
 
     }

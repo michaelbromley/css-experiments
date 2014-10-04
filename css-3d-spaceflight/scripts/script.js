@@ -17,6 +17,7 @@ var ship = new Ship(
 var perspective = new Perspective(document.querySelector('.midground'));
 
 shotFactory.setTemplate(document.querySelector('.shot'));
+alienFactory.setTemplate(document.querySelector('.alien-container'));
 
 /**
  * Globals
@@ -42,13 +43,14 @@ var keysDown = [];
         }
         if (keysDown.indexOf(32) !== -1) {
             shotFactory.create(ship.x, ship.y);
-            console.log('ship.x: ' +ship.x+', ship.y: ' + ship.y);
         }
     }
 
     ship.updatePosition();
     perspective.update(ship);
     shotFactory.updatePositions(ship);
+    alienFactory.updatePositions(ship);
+    collisionDetector.check(shotFactory.shots(), alienFactory.aliens());
 
     setTimeout(tick, 30);
 })();
@@ -60,6 +62,9 @@ document.addEventListener('keydown', function(e) {
     var keyCode = e.which;
     if (keysDown.indexOf(keyCode) === -1) {
         keysDown.push(keyCode);
+        if (keyCode === 65) {
+            alienFactory.spawn();
+        }
     }
 });
 document.addEventListener('keyup', function(e) {
