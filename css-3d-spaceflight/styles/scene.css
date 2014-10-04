@@ -22,6 +22,14 @@ body {
   left: 50%;
   transform-style: preserve-3d;
 }
+.firepower-meter-container {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 300;
+  background-color: #ffffff;
+  padding: 20px;
+}
 @keyframes stars-animation-1 {
   0% {
     transform: rotateZ(90deg) translateZ(-300px);
@@ -326,6 +334,12 @@ body {
   border: 0.15vw solid #ffa500;
   box-shadow: inset 0 0 10px #ffa500, 0px 0px 10px 0px #ffa500;
   background-color: rgba(0, 0, 0, 0.7);
+  transition: box-shadow 0.5s, opacity 0.5s 0.2s;
+}
+.hit .alien {
+  box-shadow: inset 0 0 10px #ffdb99, 0px 0px 100px 50px #ffdb99;
+  border-color: white;
+  opacity: 0;
 }
 .body {
   width: 7vw;
@@ -363,6 +377,7 @@ body {
   border: 0.15vw solid #ffa500;
   box-shadow: inset 0 0 10px #ffa500, 0px 0px 10px 0px #ffa500;
   background-color: rgba(0, 0, 0, 0.7);
+  transition: box-shadow 0.5s, opacity 0.5s 0.2s;
 }
 .mouth:after {
   content: '';
@@ -375,6 +390,7 @@ body {
   border: 0.15vw solid #ffa500;
   box-shadow: inset 0 0 10px #ffa500, 0px 0px 10px 0px #ffa500;
   background-color: rgba(0, 0, 0, 0.7);
+  transition: box-shadow 0.5s, opacity 0.5s 0.2s;
 }
 @keyframes spin {
   0% {

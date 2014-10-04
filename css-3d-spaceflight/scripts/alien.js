@@ -11,6 +11,7 @@ function Alien(el, x, y, speed) {
     self.z = range;
     self.vz = speed;
     self.hit = false; // has the alien been hit by a shot?
+    self.destroyed = false; // has it exploded from being hit?
 
     /**
      * The x and y is the position of the ship, which affects how the shots will be offset
@@ -29,8 +30,19 @@ function Alien(el, x, y, speed) {
             'translateZ(' + self.z + 'px) ';
         self.el.style.opacity = opacity;
         self.el.style.display = 'block';
-        return 500 < self.z || self.hit;
+
+        if (self.hit) {
+            destroy();
+        }
+        return 500 < self.z || self.destroyed;
     };
+
+    function destroy() {
+        self.el.classList.add('hit');
+        setTimeout(function() {
+            self.destroyed = true;
+        }, 1200);
+    }
 }
 
 
@@ -43,11 +55,11 @@ var alienFactory = (function() {
         },
         spawn: function() {
             var newElement = alienElement.cloneNode(true);
-            var spawnX = document.documentElement.clientWidth * (Math.random() - 0.5);
-            var spawnY = document.documentElement.clientHeight * (Math.random() - 0.5) * 0.8;
+            var spawnX = document.documentElement.clientWidth * (Math.random() - 0.5) * 0.8;
+            var spawnY = document.documentElement.clientHeight * (Math.random() - 0.5) * 0.5;
             var sceneDiv = document.querySelector('.scene');
             sceneDiv.insertBefore(newElement, sceneDiv.children[0]);
-            aliens.push(new Alien(newElement, spawnX, spawnY, 100));
+            aliens.push(new Alien(newElement, spawnX, spawnY, 30));
         },
         updatePositions: function(ship) {
             var aliensToRemove = [];

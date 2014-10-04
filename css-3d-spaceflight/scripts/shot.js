@@ -32,15 +32,23 @@ function Shot(el, x, y) {
 var shotFactory = (function() {
     var shotElement;
     var shots = [];
+    var MAX_FIREPOWER = 10
+    var firepower = MAX_FIREPOWER;
+
     return {
         setTemplate: function(el) {
             shotElement = el.cloneNode(false);
             shotElement.style.display = 'block';
         },
         create: function(x, y) {
-            var newElement = shotElement.cloneNode(false);
-            document.querySelector('.scene').appendChild(newElement);
-            shots.push(new Shot(newElement, x, y));
+            if (0 < Math.round(firepower)) {
+                throttle(function () {
+                    var newElement = shotElement.cloneNode(false);
+                    document.querySelector('.scene').appendChild(newElement);
+                    shots.push(new Shot(newElement, x, y));
+                    firepower --;
+                }, 100);
+            }
         },
         updatePositions: function(ship) {
             var shotsToRemove = [];
@@ -58,9 +66,28 @@ var shotFactory = (function() {
                 shots.splice(shotsToRemove[i], 1);
                 document.querySelector('.scene').removeChild(el);
             }
+
+            if (firepower < MAX_FIREPOWER) {
+                firepower += 0.1;
+            }
         },
         shots: function() {
             return shots;
+        },
+        firepower: function() {
+            return Math.round(firepower);
         }
     };
+
 })();
+
+var timer, canFire = true;
+function throttle(fn, delay) {
+    if (canFire) {
+        fn();
+        canFire = false;
+        timer = setTimeout(function () {
+            canFire = true;
+        }, delay);
+    }
+}

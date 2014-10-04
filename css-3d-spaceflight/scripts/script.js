@@ -52,6 +52,8 @@ var keysDown = [];
     alienFactory.updatePositions(ship);
     collisionDetector.check(shotFactory.shots(), alienFactory.aliens());
 
+    document.querySelector('.firepower').innerHTML = shotFactory.firepower();
+
     setTimeout(tick, 30);
 })();
 
