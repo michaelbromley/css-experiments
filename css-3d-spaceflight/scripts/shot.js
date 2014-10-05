@@ -2,24 +2,31 @@
 function Shot(el, x, y) {
     var self = this;
     var range = 15000; // how far into the distance before it disappears
+    var speed = 10000; // distance (in pixels) travelled in 1 second;
+    self.lastTimestamp = null;
     self.el = el;
     self.x = x;
     self.y = y;
     self.z = 0;
-    self.vz = -200;
     self.hit = false; // has the shot collided with an alien?
 
     /**
      * The x and y is the position of the ship, which affects how the shots will be offset
      * @param x
      * @param y
+     * @param timestamp
      * @returns {boolean}
      */
-    self.updatePosition = function(x, y) {
+    self.updatePosition = function(x, y, timestamp) {
+        if (self.lastTimestamp === null) {
+            self.lastTimestamp = timestamp;
+        }
+        self.z -= (timestamp - self.lastTimestamp) / 1000 * speed;
+        self.lastTimestamp = timestamp;
         var offsetX = self.x - x;
         var offsetY = self.y - y;
         var opacity = (range + self.z) / range;
-        self.z += self.vz;
+
         self.el.style.transform =
             'translateY(' + (self.y + offsetY) + 'px) ' +
             'translateX(' + (self.x + offsetX) + 'px) ' +
@@ -32,7 +39,7 @@ function Shot(el, x, y) {
 var shotFactory = (function() {
     var shotElement;
     var shots = [];
-    var MAX_FIREPOWER = 10
+    var MAX_FIREPOWER = 10;
     var firepower = MAX_FIREPOWER;
 
     return {
@@ -50,11 +57,11 @@ var shotFactory = (function() {
                 }, 100);
             }
         },
-        updatePositions: function(ship) {
+        updatePositions: function(ship, timestamp) {
             var shotsToRemove = [];
             var remove, i;
             for(i = 0; i < shots.length; i++) {
-                remove = shots[i].updatePosition(ship.x, ship.y);
+                remove = shots[i].updatePosition(ship.x, ship.y, timestamp);
                 if (remove) {
                     shotsToRemove.push(i);
                 }

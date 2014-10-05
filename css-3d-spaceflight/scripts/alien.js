@@ -9,7 +9,7 @@ function Alien(el, x, y, speed, motionFunction) {
     self.x = x;
     self.y = y;
     self.z = range;
-    self.vz = speed;
+    self.lastTimestamp = null;
     self.motionFunction = motionFunction;
     self.hit = false; // has the alien been hit by a shot?
     self.destroyed = false; // has it exploded from being hit?
@@ -18,14 +18,21 @@ function Alien(el, x, y, speed, motionFunction) {
      * The x and y is the position of the ship, which affects how the shots will be offset
      * @param x
      * @param y
+     * @param timestamp
      * @returns {boolean}
      */
-    self.updatePosition = function(x, y) {
+    self.updatePosition = function(x, y, timestamp) {
         var xy = applyMotionFunction();
         var offsetX = self.x - x;
         var offsetY = self.y - y;
         var opacity =  Math.min(1 - self.z / range / 2, 1);
-        self.z += self.vz;
+
+        if (self.lastTimestamp === null) {
+            self.lastTimestamp = timestamp;
+        }
+        self.z += (timestamp - self.lastTimestamp) / 1000 * speed;
+        self.lastTimestamp = timestamp;
+
         self.el.style.transform =
             'translateY(' + (xy.y + offsetY) + 'px) ' +
             'translateX(' + (xy.x + offsetX) + 'px) ' +
@@ -70,7 +77,7 @@ var alienFactory = (function() {
             y: this.y
         };
     };
-    
+
     var verticalOscillation = function(z) {
         var y = this.y + Math.sin(this.z/1000) * viewportHeight/4;
         var x = this.x;
@@ -81,22 +88,25 @@ var alienFactory = (function() {
     };
 
     return {
+
         setTemplate: function(el) {
             alienElement = el.cloneNode(true);
         },
+
         spawn: function() {
             var newElement = alienElement.cloneNode(true);
             var spawnX = viewportWidth * (Math.random() - 0.5) * 0.8;
             var spawnY = viewportHeight * (Math.random() - 0.5) * 0.5;
             var sceneDiv = document.querySelector('.scene');
             sceneDiv.insertBefore(newElement, sceneDiv.children[0]);
-            aliens.push(new Alien(newElement, spawnX, spawnY, 30, verticalOscillation));
+            aliens.push(new Alien(newElement, spawnX, spawnY, 1000, verticalOscillation));
         },
-        updatePositions: function(ship) {
+
+        updatePositions: function(ship, timestamp) {
             var aliensToRemove = [];
             var remove, i;
             for(i = 0; i < aliens.length; i++) {
-                remove = aliens[i].updatePosition(ship.x, ship.y);
+                remove = aliens[i].updatePosition(ship.x, ship.y, timestamp);
                 if (remove) {
                     aliensToRemove.push(i);
                 }
@@ -109,6 +119,7 @@ var alienFactory = (function() {
                 document.querySelector('.scene').removeChild(el);
             }
         },
+
         aliens: function() {
             return aliens;
         }

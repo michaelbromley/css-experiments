@@ -27,7 +27,7 @@ var keysDown = [];
 /**
  * Game loop
  */
-(function tick() {
+function tick(timestamp) {
     if (0 < keysDown.length) {
         if (keysDown.indexOf(39) !== -1) {
             ship.moveLeft();
@@ -46,16 +46,17 @@ var keysDown = [];
         }
     }
 
-    ship.updatePosition();
+    ship.updatePosition(timestamp);
     perspective.update(ship);
-    shotFactory.updatePositions(ship);
-    alienFactory.updatePositions(ship);
+    shotFactory.updatePositions(ship, timestamp);
+    alienFactory.updatePositions(ship, timestamp);
     collisionDetector.check(shotFactory.shots(), alienFactory.aliens());
 
     document.querySelector('.firepower').innerHTML = shotFactory.firepower();
 
-    setTimeout(tick, 30);
-})();
+    window.requestAnimationFrame(tick);
+}
+window.requestAnimationFrame(tick);
 
 /**
  * Event handlers

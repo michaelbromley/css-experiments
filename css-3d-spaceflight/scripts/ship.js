@@ -2,12 +2,12 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
     var self = this;
 
     // Constants
-    var A = 2; // acceleration factor
-    var D = 0.6; // deceleration factor
-    var AA = 2; // angular acceleration factor
-    var AD = 0.1; // angular deceleration factor
-    var MAX_A = 25; // maximum permitted linear acceleration
-    var MAX_AA = 10; // maximum permitted angular acceleration
+    var A = 50; // acceleration factor
+    var D = 200; // deceleration factor
+    var AA = 70; // angular acceleration factor
+    var AD = 130; // angular deceleration factor
+    var MAX_V = 500; // maximum permitted linear velocity
+    var MAX_AV = 200; // maximum permitted angular acceleration
     // field boundary limits
     var MIN_X = -fieldWidth * 0.4;
     var MAX_X = fieldWidth * 0.4;
@@ -15,6 +15,7 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
     var MIN_Y = -fieldHeight * 0.4;
 
     self.el = containerElement;
+    self.lastTimestamp = null;
 
     // linear position
     self.x = 0;
@@ -57,20 +58,27 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
         self.vrx += AA;
     };
 
-    self.updatePosition = function() {
+    self.updatePosition = function(timestamp) {
+        var step;
+        if (self.lastTimestamp === null) {
+            self.lastTimestamp = timestamp;
+        }
+        step = (timestamp - self.lastTimestamp) / 1000;
+        self.lastTimestamp = timestamp;
+
         enforceFieldBoundary();
 
-        self.x += self.vx;
-        self.y += self.vy;
-        self.ry += self.vry;
-        self.rz += self.vrz;
-        self.rx += self.vrx;
+        self.x += self.vx * step;
+        self.y += self.vy * step;
+        self.ry += self.vry * step;
+        self.rz += self.vrz * step;
+        self.rx += self.vrx * step;
 
-        self.vx = applyDeceleration(self.vx, D);
-        self.vy = applyDeceleration(self.vy, D);
-        self.vrx = applyRotationalDeceleration(self.vrx, self.rx, 90, AD);
-        self.vry = applyRotationalDeceleration(self.vry, self.ry, 0, AD);
-        self.vrz = applyRotationalDeceleration(self.vrz, self.rz, 0, AD);
+        self.vx = applyDeceleration(self.vx, D * step);
+        self.vy = applyDeceleration(self.vy, D * step);
+        self.vrx = applyRotationalDeceleration(self.vrx, self.rx, 90, AD * step);
+        self.vry = applyRotationalDeceleration(self.vry, self.ry, 0, AD * step);
+        self.vrz = applyRotationalDeceleration(self.vrz, self.rz, 0, AD * step);
 
         self.el.style.transform =
             'translateZ(' + self.z + 'px) ' +
@@ -82,7 +90,7 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
     };
 
     function enforceFieldBoundary() {
-        var bounceFactor = 0.1;
+        var bounceFactor = 0.5;
         var delta;
         if (MAX_X < self.x) {
             delta = self.x - MAX_X;
@@ -118,11 +126,11 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
             newValue = 0;
         }
 
-        if (MAX_A < newValue) {
-            newValue = MAX_A;
+        if (MAX_V < newValue) {
+            newValue = MAX_V;
         }
-        if (newValue < -MAX_A) {
-            newValue = -MAX_A;
+        if (newValue < -MAX_V) {
+            newValue = -MAX_V;
         }
 
         return newValue;
@@ -144,11 +152,11 @@ function Ship(containerElement, fieldWidth, fieldHeight) {
            newValue = 0;
         }
 
-        if (MAX_AA < newValue) {
-            newValue = MAX_AA;
+        if (MAX_AV < newValue) {
+            newValue = MAX_AV;
         }
-        if (newValue < -MAX_AA) {
-            newValue = -MAX_AA;
+        if (newValue < -MAX_AV) {
+            newValue = -MAX_AV;
         }
 
         return newValue;

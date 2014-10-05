@@ -1,3 +1,11 @@
+@keyframes spin {
+  0% { transform: rotateZ(0); }
+  100% { transform: rotateZ(359); }
+}
+.background {
+  animation: spin 600s linear infinite;
+}
+
 @keyframes stars-animation-1 {
   0% {
     transform: rotateZ(90deg) translateZ(-300px);
@@ -18,7 +26,7 @@
   position: inherit;
   width: 1px;
   height: 1px;
-  animation: stars-animation-1 90s linear infinite alternate;
+  animation: stars-animation-1 60s linear infinite alternate;
   box-shadow:
   3vw 1vh #ffdad0,
   6vw 49vh #ffd6e7,
@@ -73,7 +81,7 @@
     content: '';
     width: 1px;
     height: 1px;
-    animation: stars-animation-2 90s linear infinite alternate;
+    animation: stars-animation-2 60s linear infinite alternate;
     box-shadow:
     3vw 1vh #ffdad0,
     6vw 49vh #ffd6e7,
@@ -116,7 +124,7 @@
   height: 50vw;
   border-radius: 50%;
   background-color: #111;
-  animation: planet-animation 90s linear infinite alternate;
+  animation: planet-animation 60s linear infinite alternate;
   box-shadow:
   inset 0 0 50px #fff,
   inset 20px 0 80px #f0f,
