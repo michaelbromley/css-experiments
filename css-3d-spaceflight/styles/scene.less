@@ -29,14 +29,37 @@ html, body {
 .midground {
 
 }
- 
+
 .firepower-meter-container {
   position: absolute;
+  opacity: 0.5;
   left: 20px;
   bottom: 20px;
   z-index: 300;
-  background-color: #ffffff;
-  padding: 20px;
+  overflow: hidden;
+  width: 300px;
+  height: 30px;
+  .firepower-meter {
+    background: linear-gradient(to right, rgba(170,34,34,1) 0%,rgba(232,131,37,1) 21%,rgba(0,226,7,1) 60%, rgb(255, 255, 255) 87%); /* W3C */
+    display: block;
+    border-radius: 5px;
+    width: 300px;
+    height: 30px;
+    background-color: red;
+  }
+}
+
+.announcement {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  margin-top: 40vh;
+  color: white;
+  font-size: 12vh;
+  text-align: center;
+  font-family: arial, helvetica, sans serif;
+  text-transform: uppercase;
+  transition: opacity 0.5s;
 }
 
 @import "background";

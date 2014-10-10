@@ -1,9 +1,13 @@
 @import "vars";
 
-@alien-color: orange;
-@alien-box-shadow: inset 0 0 10px @alien-color, 0px 0px 10px 0px @alien-color;
+@orange: orange;
+@alien-box-shadow: inset 0 0 10px @orange, 0px 0px 10px 0px @orange;
 @alien-fill-color: rgba(0,0,0,0.7);
 @alien-border-width: @scale * 0.15;
+
+.alien-box-shadow(@color) {
+  box-shadow: inset 0 0 10px @color, 0px 0px 10px 0px @color;;
+}
 
 @keyframes rotate {
   0%{ transform: rotateY(0);}
@@ -16,14 +20,30 @@
   z-index: 20;
 }
 .alien {
-  border: @alien-border-width solid @alien-color;
-  box-shadow: @alien-box-shadow;
+  border: @alien-border-width solid @orange;
+  .alien-box-shadow(@orange);
   background-color: @alien-fill-color;
   transition: box-shadow 0.5s, opacity 0.5s 0.2s;
 }
+.red .alien, .red .mouth:before, .red .mouth:after {
+  border: @alien-border-width solid #ff2e53;
+  .alien-box-shadow(#ff2e53);
+}
+.blue .alien, .blue .mouth:before, .blue .mouth:after {
+  border: @alien-border-width solid #3183ff;
+  .alien-box-shadow(#3183ff);
+}
+.green .alien, .green .mouth:before, .green .mouth:after {
+  border: @alien-border-width solid greenyellow;
+  .alien-box-shadow(greenyellow);
+}
+.white .alien, .white .mouth:before, .white .mouth:after {
+  border: @alien-border-width solid white;
+  .alien-box-shadow(white);
+}
 
 .hit .alien {
-  box-shadow: inset 0 0 10px lighten(@alien-color, 30%), 0px 0px 100px 50px lighten(@alien-color, 30%);
+  box-shadow: inset 0 0 10px lighten(@orange, 30%), 0px 0px 100px 50px lighten(@orange, 30%);
   border-color: white;
   opacity: 0;
 }

@@ -2,15 +2,16 @@
  * Created by Michael on 02/10/2014.
  */
 
-function Alien(el, x, y, speed, motionFunction) {
+function Alien(el, x, y, speed, config) {
     var self = this;
     var range = -15000;
     self.el = el;
+    self.el.classList.add(config.colorClass);
     self.x = x;
     self.y = y;
     self.z = range;
     self.lastTimestamp = null;
-    self.motionFunction = motionFunction;
+    self.motionFunction = config.motionFunction;
     self.hit = false; // has the alien been hit by a shot?
     self.destroyed = false; // has it exploded from being hit?
 
@@ -65,41 +66,26 @@ var alienFactory = (function() {
     var viewportWidth = document.documentElement.clientWidth;
     var viewportHeight = document.documentElement.clientHeight;
 
-    /**
-     * Alien motion functions. All take the z position of the alien as an argument, and return
-     * an object with x and y properties.
-     * The functions are called within the context of an alien object, so `this` will refer to
-     * the alien itself.
-     */
-    var noMotion = function() {
-        return {
-            x: this.x,
-            y: this.y
-        };
-    };
-
-    var verticalOscillation = function(z) {
-        var y = this.y + Math.sin(this.z/1000) * viewportHeight/4;
-        var x = this.x;
-        return {
-            x: x,
-            y: y
-        };
-    };
-
     return {
 
         setTemplate: function(el) {
             alienElement = el.cloneNode(true);
         },
 
-        spawn: function() {
-            var newElement = alienElement.cloneNode(true);
-            var spawnX = viewportWidth * (Math.random() - 0.5) * 0.8;
-            var spawnY = viewportHeight * (Math.random() - 0.5) * 0.5;
-            var sceneDiv = document.querySelector('.scene');
-            sceneDiv.insertBefore(newElement, sceneDiv.children[0]);
-            aliens.push(new Alien(newElement, spawnX, spawnY, 1000, verticalOscillation));
+        spawn: function(event) {
+            if (event.type && event.type === 'spawn') {
+                event.data.forEach(function (alienClass) {
+
+                    var newElement = alienElement.cloneNode(true);
+                    var spawnX = viewportWidth * (Math.random() - 0.5) * 0.8;
+                    var spawnY = viewportHeight * (Math.random() - 0.5) * 0.5;
+                    var sceneDiv = document.querySelector('.scene');
+                    var config = getAlienConfig(alienClass);
+
+                    sceneDiv.insertBefore(newElement, sceneDiv.children[0]);
+                    aliens.push(new Alien(newElement, spawnX, spawnY, 1000, config));
+                });
+            }
         },
 
         updatePositions: function(ship, timestamp) {
@@ -124,4 +110,87 @@ var alienFactory = (function() {
             return aliens;
         }
     };
+
+
+
+    function getAlienConfig(alienClass) {
+        var motionFunction, colorClass;
+
+        /**
+         * Alien motion functions. All take the z position of the alien as an argument, and return
+         * an object with x and y properties.
+         * The functions are called within the context of an alien object, so `this` will refer to
+         * the alien itself.
+         */
+        var noMotion = function() {
+            return {
+                x: this.x,
+                y: this.y
+            };
+        };
+
+        var verticalOscillation = function() {
+            var y = this.y + Math.sin(this.z/1000) * viewportHeight/4;
+            var x = this.x;
+            return {
+                x: x,
+                y: y
+            };
+        };
+
+        var horizontalOscillation = function() {
+            var y = this.y;
+            var x = this.x + Math.sin(this.z/1000) * viewportWidth/4;
+            return {
+                x: x,
+                y: y
+            };
+        };
+
+        var spiral = function() {
+            var y = this.y + Math.cos(this.z/1000) * viewportWidth/4;
+            var x = this.x + Math.sin(this.z/1000) * viewportWidth/4;
+            return {
+                x: x,
+                y: y
+            };
+        };
+
+
+        var noiseX = new Simple1DNoise();
+        noiseX.setAmplitude(viewportWidth/2);
+        var noiseY = new Simple1DNoise();
+        noiseY.setAmplitude(viewportHeight/2);
+
+        var random = function() {
+            var y = this.y + noiseY.getVal(this.z/1000);
+            var x = this.x + noiseX.getVal(this.z/1000);
+            return {
+                x: x,
+                y: y
+            };
+        };
+
+        if (alienClass === ALIEN_CLASS.stationary) {
+            motionFunction = noMotion;
+            colorClass = 'orange';
+        } else if (alienClass === ALIEN_CLASS.vertical) {
+            motionFunction = verticalOscillation;
+            colorClass = 'red';
+        } else if (alienClass === ALIEN_CLASS.horizontal) {
+            motionFunction = horizontalOscillation;
+            colorClass = 'blue';
+        } else if (alienClass === ALIEN_CLASS.spiral) {
+            motionFunction = spiral;
+            colorClass = 'green';
+        } else if (alienClass === ALIEN_CLASS.random) {
+            motionFunction = random;
+            colorClass = 'white';
+        }
+
+        return {
+            motionFunction: motionFunction,
+            colorClass: colorClass
+        };
+    }
 })();

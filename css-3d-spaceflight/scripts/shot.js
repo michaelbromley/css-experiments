@@ -82,7 +82,7 @@ var shotFactory = (function() {
             return shots;
         },
         firepower: function() {
-            return Math.round(firepower);
+            return firepower;
         }
     };
 

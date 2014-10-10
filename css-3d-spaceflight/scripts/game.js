@@ -1,23 +1,17 @@
-function Perspective(midgroundContainer) {
-    var midground = midgroundContainer;
-
-    this.update = function(ship) {
-        var x = ship.x * -0.3;
-        var y = ship.y * -0.3;
-        midground.style.transform = "translateX(" + x + 'px) translateY(' + y + 'px)';
-    }
-}
-
-
+/**
+ * Initialize
+ */
 var ship = new Ship(
     document.querySelector('.ship-container'),
     document.documentElement.clientWidth,
     document.documentElement.clientHeight);
+var track = new Track(document.querySelector('.midground'));
 
-var perspective = new Perspective(document.querySelector('.midground'));
-
+display.setAnnouncerElement(document.querySelector('.announcement'));
+display.setFirepowerElement(document.querySelector('.announcement'));
 shotFactory.setTemplate(document.querySelector('.shot'));
 alienFactory.setTemplate(document.querySelector('.alien-container'));
+levelPlayer.setLevel(levelData);
 
 /**
  * Globals
@@ -46,13 +40,15 @@ function tick(timestamp) {
         }
     }
 
+    var event = levelPlayer.getEvents(timestamp);
+
+    display.update(event, shotFactory.firepower());
     ship.updatePosition(timestamp);
-    perspective.update(ship);
+    track.update(ship);
     shotFactory.updatePositions(ship, timestamp);
+    alienFactory.spawn(event);
     alienFactory.updatePositions(ship, timestamp);
     collisionDetector.check(shotFactory.shots(), alienFactory.aliens());
-
-    document.querySelector('.firepower').innerHTML = shotFactory.firepower();
 
     window.requestAnimationFrame(tick);
 }
